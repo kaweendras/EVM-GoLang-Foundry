@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"log"
 	"math/big"
-	"os"
 	"strings"
 
 	"github.com/ethereum/go-ethereum/accounts/abi"
@@ -14,6 +13,7 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/ethclient"
+	"github.com/kaweendras/EVM-GoLang-Foundry/utils"
 )
 
 func main() {
@@ -61,7 +61,7 @@ func main() {
 	auth.GasPrice = gasPrice
 
 	contractAddress := common.HexToAddress("0x8464135c8f25da09e49bc8782676a84730c318bc")
-	contractABI, err := getABI()
+	contractABI, err := utils.GetABI()
 	if err != nil {
 		log.Fatalf("Failed to get contract ABI: %v", err)
 	}
@@ -91,19 +91,4 @@ func main() {
 
 	fmt.Printf("Variable Value: %s\n", number.String())
 
-}
-
-func getABI() ([]byte, error) {
-	cwd, err := os.Getwd()
-	if err != nil {
-		return nil, fmt.Errorf("failed to get current working directory: %v", err)
-	}
-	fmt.Println("Current working directory:", cwd)
-
-	abiFile, err := os.ReadFile("ABI/bamla.json")
-	if err != nil {
-		return nil, fmt.Errorf("failed to read ABI file: %v", err)
-	}
-
-	return abiFile, nil
 }

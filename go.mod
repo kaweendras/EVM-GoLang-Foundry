@@ -1,4 +1,4 @@
-module go-evm-interaction
+module github.com/kaweendras/EVM-GoLang-Foundry
 
 go 1.23.0
 
