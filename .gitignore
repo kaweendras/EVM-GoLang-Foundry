@@ -1,0 +1,39 @@
+# Node.js
+contract-foundry/node_modules/
+
+# Foundry
+contract-foundry/cache/
+contract-foundry/out/
+
+# Ignores development broadcast logs
+contract-foundry/broadcast/
+contract-foundry/broadcast/*/31337/
+contract-foundry/broadcast/**/dry-run/
+
+# Docs
+contract-foundry/docs/
+
+# Dotenv file
+contract-foundry/.env
+
+# Go
+bin/
+pkg/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Go workspace file
+go.work
+go.work.sum
+
+# IDE/editor specific
+.vscode/
+.idea/
+*.swp
+*.swo
+*.DS_Store
