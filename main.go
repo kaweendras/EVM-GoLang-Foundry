@@ -94,4 +94,12 @@ func main() {
 	// }
 	// fmt.Printf("Transaction sent: %s\n", tx.Hash().Hex())
 
+	//burn token from an address (WRITE)
+	// amount := big.NewInt(1500000000000000000)
+	// tx, err := contract.Transact(auth, "burnFrom", toAddress, amount)
+	// if err != nil {
+	// 	log.Fatalf("Failed to send transaction: %v", err)
+	// }
+	// fmt.Printf("Transaction sent: %s\n", tx.Hash().Hex())
+
 }
