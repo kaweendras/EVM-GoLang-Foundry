@@ -11,9 +11,10 @@ func GetABI() ([]byte, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to get current working directory: %v", err)
 	}
-	fmt.Println("Current working directory:", cwd)
+	// Convert the relative path to an absolute path
+	relativePath := cwd + "/ABI/bamla.json"
 
-	abiFile, err := os.ReadFile("../ABI/bamla.json")
+	abiFile, err := os.ReadFile(relativePath)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read ABI file: %v", err)
 	}

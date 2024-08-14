@@ -1,4 +1,4 @@
-package main
+package contract
 
 import (
 	"context"
@@ -17,22 +17,16 @@ import (
 	"github.com/kaweendras/EVM-GoLang-Foundry/utils"
 )
 
-func main() {
-	ethNodeURL := os.Getenv("ETH_NODE_URL")
+func LoadPrivateKey() *ecdsa.PrivateKey {
 	privateKeyHex := os.Getenv("PRIVATE_KEY")
-
-	// Connect to an Ethereum node
-	client, err := ethclient.Dial(ethNodeURL)
-	if err != nil {
-		log.Fatalf("Failed to connect to the Ethereum client: %v", err)
-	}
-	defer client.Close()
-
 	privateKey, err := crypto.HexToECDSA(privateKeyHex)
 	if err != nil {
 		log.Fatalf("Failed to load private key: %v", err)
 	}
+	return privateKey
+}
 
+func GetAuth(client *ethclient.Client, privateKey *ecdsa.PrivateKey) *bind.TransactOpts {
 	publicKey := privateKey.Public()
 	publicKeyECDSA, ok := publicKey.(*ecdsa.PublicKey)
 	if !ok {
@@ -64,6 +58,10 @@ func main() {
 	auth.GasLimit = uint64(300000) // in units
 	auth.GasPrice = gasPrice
 
+	return auth
+}
+
+func GetContract(client *ethclient.Client) *bind.BoundContract {
 	contractAddress := common.HexToAddress("0x8464135c8f25da09e49bc8782676a84730c318bc")
 	contractABI, err := utils.GetABI()
 	if err != nil {
@@ -75,23 +73,22 @@ func main() {
 		log.Fatalf("Failed to parse contract ABI: %v", err)
 	}
 
-	contract := bind.NewBoundContract(contractAddress, parsedABI, client, client, client)
-	toAddress := common.HexToAddress("0xa0Ee7A142d267C1f36714E4a8F75612F20a79720")
+	return bind.NewBoundContract(contractAddress, parsedABI, client, client, client)
+}
 
-	//print the token amount of an address (READ)
+func GetBalance(contract *bind.BoundContract, address common.Address) *big.Int {
 	var result *big.Int
-	err = contract.Call(nil, &[]interface{}{&result}, "balanceOf", toAddress)
+	err := contract.Call(nil, &[]interface{}{&result}, "balanceOf", address)
 	if err != nil {
 		log.Fatalf("Failed to call contract: %v", err)
 	}
-	fmt.Printf("Token amount: %s\n", result.String())
+	return result
+}
 
-	//mint token to an address (WRITE)
-	// amount := big.NewInt(1000000000000000000)
-	// tx, err := contract.Transact(auth, "mint", toAddress, amount)
-	// if err != nil {
-	// 	log.Fatalf("Failed to send transaction: %v", err)
-	// }
-	// fmt.Printf("Transaction sent: %s\n", tx.Hash().Hex())
-
+func MintToken(auth *bind.TransactOpts, contract *bind.BoundContract, toAddress common.Address, amount *big.Int) {
+	tx, err := contract.Transact(auth, "mint", toAddress, amount)
+	if err != nil {
+		log.Fatalf("Failed to send transaction: %v", err)
+	}
+	fmt.Printf("Transaction sent: %s\n", tx.Hash().Hex())
 }
