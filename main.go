@@ -64,7 +64,7 @@ func main() {
 	auth.GasLimit = uint64(300000) // in units
 	auth.GasPrice = gasPrice
 
-	contractAddress := common.HexToAddress("0x8464135c8f25da09e49bc8782676a84730c318bc")
+	contractAddress := common.HexToAddress("0x5fbdb2315678afecb367f032d93f642f64180aa3")
 	contractABI, err := utils.GetABI()
 	if err != nil {
 		log.Fatalf("Failed to get contract ABI: %v", err)
