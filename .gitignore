@@ -16,6 +16,9 @@ contract-foundry/docs/
 # Dotenv file
 contract-foundry/.env
 
+#env files
+env.sh
+
 # Go
 bin/
 pkg/
